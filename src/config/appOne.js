@@ -3,10 +3,11 @@ import { AboutPageOne } from "../components/one/AboutPageOne";
 
 export const appOneConfig = {
   title: "App One",
-  theme: "theme-one",
-  apiBaseUrl: "https://api.one.com",
   routes: [
     { path: "/", component: HomePageOne, exact: true },
     { path: "/about", component: AboutPageOne, exact: true },
   ],
+  wrapper: ({ children }) => (
+    <div style={{ border: "4px solid blue" }}>{children}</div>
+  ),
 };
