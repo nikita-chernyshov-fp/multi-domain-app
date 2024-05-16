@@ -7,8 +7,7 @@ const configs = {
 };
 
 export default function getConfig() {
-  //const hostname = window.location.hostname; // appone.com / apptwo.com / any-other.com
-  const hostnameEnv = process.env.REACT_APP_HOSTNAME || "appone.com";
+  const hostnameEnv = process.env.REACT_APP_HOSTNAME;
 
-  return configs[hostnameEnv];
+  return configs[hostnameEnv] || configs["apptwo.com"];
 }
