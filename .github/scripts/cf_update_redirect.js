@@ -5,17 +5,41 @@ const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const prNumber = process.env.GITHUB_PR_NUMBER;
 
 const apiUrl = `https://api.cloudflare.com/client/v4/zones/${zoneId}/pagerules`;
-const redirectName = "my_redirect_list";
+const listName = "my_redirect_list";
 
 const headers = {
   Authorization: `Bearer ${apiToken}`,
   "Content-Type": "application/json",
 };
 
+async function getListIdByName(listName) {
+  const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/rules/lists`;
+  try {
+    const response = await axios.get(url, { headers });
+    const lists = response.data.result;
+    const foundList = lists.find((list) => list.name === listName);
+    return foundList ? foundList.id : null; // Returns null if no list is found
+  } catch (error) {
+    console.error(
+      "Failed to retrieve lists:",
+      error.response ? error.response.data : error.message
+    );
+    return null;
+  }
+}
+
 async function createRedirectList() {
+  let listId = await getListIdByName(listName);
+
+  if (listId) {
+    console.log(`List named '${listName}' already exists with ID: ${listId}`);
+    return listId; // Use the existing list ID
+  }
+
+  // Proceed to create a new list
   const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/rules/lists`;
   const data = {
-    name: "my_redirect_list",
+    name: listName,
     description: "My redirect list for PR redirects",
     kind: "redirect",
   };
@@ -70,7 +94,7 @@ async function createBulkRedirectRule() {
         action: "redirect",
         action_parameters: {
           from_list: {
-            name: "my_redirect_list",
+            name: listName,
             key: "http.request.full_uri",
           },
         },
