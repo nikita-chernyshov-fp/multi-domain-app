@@ -25,6 +25,7 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GITHUB_PR_NUMBER: ${{ github.event.number }}
         run: node .github/scripts/cf_update_redirect.js
         #run: node .github/scripts/update_dns.js create
