@@ -1,7 +1,7 @@
 const axios = require("axios");
 const apiToken = process.env.CLOUDFLARE_API_TOKEN;
 const zoneId = process.env.CLOUDFLARE_ZONE_ID;
-const prNumber = process.env.PR_NUMBER;
+const prNumber = process.env.GITHUB_PR_NUMBER;
 
 const apiUrl = `https://api.cloudflare.com/client/v4/zones/${zoneId}/pagerules`;
 
