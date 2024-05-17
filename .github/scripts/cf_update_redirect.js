@@ -5,6 +5,7 @@ const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const prNumber = process.env.GITHUB_PR_NUMBER;
 
 const apiUrl = `https://api.cloudflare.com/client/v4/zones/${zoneId}/pagerules`;
+const redirectName = "my_redirect_list";
 
 const headers = {
   Authorization: `Bearer ${apiToken}`,
@@ -33,6 +34,7 @@ async function createRedirectList() {
 
 async function addItemsToList(listId) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/rules/lists/${listId}/items`;
+
   const items = [
     {
       redirect: {
@@ -55,7 +57,7 @@ async function addItemsToList(listId) {
   }
 }
 
-async function createBulkRedirectRule(listId) {
+async function createBulkRedirectRule() {
   const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/rulesets`;
   const data = {
     name: "My redirect ruleset",
@@ -68,7 +70,7 @@ async function createBulkRedirectRule(listId) {
         action: "redirect",
         action_parameters: {
           from_list: {
-            name: listId,
+            name: "my_redirect_list",
             key: "http.request.full_uri",
           },
         },
@@ -91,7 +93,7 @@ async function setupBulkRedirection() {
   const listId = await createRedirectList(); // Create list and get ID
   if (listId) {
     await addItemsToList(listId); // Add items to list
-    await createBulkRedirectRule(listId); // Create rule using the list
+    await createBulkRedirectRule(); // Create rule using the list
   }
 }
 
