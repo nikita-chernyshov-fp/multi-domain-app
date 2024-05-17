@@ -5,27 +5,11 @@ const prNumber = process.env.PR_NUMBER;
 
 const apiUrl = `https://api.cloudflare.com/client/v4/zones/${zoneId}/pagerules`;
 
-async function createOrUpdateRedirection() {
+async function createOrUpdateBulkRedirect() {
   const data = {
-    targets: [
-      {
-        target: "url",
-        constraint: {
-          operator: "matches",
-          value: `*://pr-${prNumber}.litl.chat/*`,
-        },
-      },
-    ],
-    actions: [
-      {
-        id: "forwarding_url",
-        value: {
-          url: `https://deploy-preview-${prNumber}--fp-test-nikita.netlify.app`,
-          status_code: 302,
-        },
-      },
-    ],
-    status: "active",
+    // Define the match pattern and forwarding URL
+    patterns: [`*://pr-${prNumber}.litl.chat/*`],
+    forwards_to: `https://deploy-preview-${prNumber}--fp-test-nikita.netlify.app`,
   };
 
   try {
@@ -35,10 +19,16 @@ async function createOrUpdateRedirection() {
         "Content-Type": "application/json",
       },
     });
-    console.log("Redirection Rule Updated:", response.data);
+    console.log(
+      `Bulk redirection created or updated for PR-${prNumber}:`,
+      response.data
+    );
   } catch (error) {
-    console.error("Failed to update redirection:", error.response.data);
+    console.error(
+      `Failed to create or update bulk redirection for PR-${prNumber}:`,
+      error.response ? error.response.data : error.message
+    );
   }
 }
 
-createOrUpdateRedirection();
+createOrUpdateBulkRedirect();
