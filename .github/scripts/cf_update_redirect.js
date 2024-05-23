@@ -121,4 +121,5 @@ async function setupBulkRedirection() {
   }
 }
 
-setupBulkRedirection();
+// setupBulkRedirection();
+console.log("script ...");
