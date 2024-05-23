@@ -11,7 +11,7 @@ const normalizedBranchName = branchName
   .replace(/\//g, "-")
   .replace(/_/g, "-")
   .toLowerCase();
-const previewUrl = `https://${normalizedBranchName}.multi-domain-app.pages.dev`;
+const previewUrl = `${normalizedBranchName}.multi-domain-app.pages.dev`;
 const recordName = `pr-${prNumber}.litl.chat`;
 console.log("previewUrl", previewUrl);
 console.log("recordName", recordName);
@@ -42,11 +42,11 @@ async function updateDnsRecord() {
 
   try {
     const response = await axios.post(url, body, { headers });
+
+    console.log(response?.data); // Log the response from the Cloudflare API
   } catch (error) {
     console.log("error", JSON.stringify(error));
   }
-
-  console.log(response?.data); // Log the response from the Cloudflare API
 }
 
 // Function to remove DNS record
