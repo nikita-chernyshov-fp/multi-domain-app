@@ -13,11 +13,14 @@ const normalizedBranchName = branchName
   .toLowerCase();
 const previewUrl = `https://${normalizedBranchName}.multi-domain-app.pages.dev`;
 const recordName = `pr-${prNumber}.litl.chat`;
+console.log("previewUrl", previewUrl);
+console.log("recordName", recordName);
 
 const headers = {
   Authorization: `Bearer ${cloudflareApiToken}`,
   "Content-Type": "application/json",
 };
+console.log("headers", headers);
 
 // Function to update DNS record
 async function updateDnsRecord() {
@@ -63,8 +66,12 @@ async function removeDnsRecord() {
 }
 
 // Determine action based on environment variable or argument
-if (process.argv[2] === "remove") {
-  removeDnsRecord();
-} else {
-  updateDnsRecord();
+try {
+  if (process.argv[2] === "remove") {
+    removeDnsRecord();
+  } else {
+    updateDnsRecord();
+  }
+} catch (error) {
+  console.log("error", error);
 }
