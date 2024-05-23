@@ -40,7 +40,11 @@ async function updateDnsRecord() {
   console.log("body", body);
   console.log("url", url);
 
-  const response = await axios.post(url, body, { headers });
+  try {
+    const response = await axios.post(url, body, { headers });
+  } catch (error) {
+    console.log("error", JSON.stringify(error));
+  }
 
   console.log(response?.data); // Log the response from the Cloudflare API
 }
