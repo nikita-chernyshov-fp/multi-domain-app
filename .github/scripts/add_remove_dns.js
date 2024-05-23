@@ -37,6 +37,9 @@ async function updateDnsRecord() {
   };
   const url = `https://api.cloudflare.com/client/v4/zones/${cloudflareZoneId}/dns_records`;
 
+  console.log("body", body);
+  console.log("url", url);
+
   const response = await axios.post(url, body, { headers });
 
   console.log(response?.data); // Log the response from the Cloudflare API
