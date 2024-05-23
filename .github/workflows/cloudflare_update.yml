@@ -27,5 +27,5 @@ jobs:
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           GITHUB_PR_NUMBER: ${{ github.event.number }}
-        run: node .github/scripts/cf_update_redirect.js
-        #run: node .github/scripts/update_dns.js create
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: node .github/scripts/add_remove_dns.js
