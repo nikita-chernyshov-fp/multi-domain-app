@@ -1,25 +1,23 @@
 const axios = require("axios");
 
 // Configurations from environment variables
-const config = {
-  cloudflareZoneId: process.env.CLOUDFLARE_ZONE_ID,
-  cloudflareApiToken: process.env.CLOUDFLARE_API_TOKEN,
-  cloudflareAccountId: process.env.CLOUDFLARE_ACCOUNT_ID,
-  projectName: process.env.CLOUDFLARE_PROJECT_NAME,
-  prNumber: process.env.GITHUB_PR_NUMBER,
-  branchName: process.env.BRANCH_NAME,
-  domain: process.env.DOMAIN,
-  normalizedBranchName: process.env.BRANCH_NAME.replace(/\//g, "-")
-    .replace(/_/g, "-")
-    .toLowerCase(),
-  headers: {
-    Authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`,
-    "Content-Type": "application/json",
-  },
+const cloudflareZoneId = process.env.CLOUDFLARE_ZONE_ID;
+const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN;
+const cloudflareAccountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+const projectName = process.env.CLOUDFLARE_PROJECT_NAME;
+const prNumber = process.env.GITHUB_PR_NUMBER;
+const branchName = process.env.BRANCH_NAME;
+const domain = process.env.DOMAIN;
+const normalizedBranchName = process.env.BRANCH_NAME.replace(/\//g, "-")
+  .replace(/_/g, "-")
+  .toLowerCase();
+const headers = {
+  Authorization: `Bearer ${cloudflareApiToken}`,
+  "Content-Type": "application/json",
 };
 
-const previewUrl = `${config.normalizedBranchName}.${config.projectName}.pages.dev`;
-const recordName = `pr-${config.prNumber}.${config.domain}`;
+const previewUrl = `${normalizedBranchName}.${projectName}.pages.dev`;
+const recordName = `pr-${prNumber}.${domain}`;
 
 const handleError = (error, message) => {
   console.error(message, error.response ? error.response.data : error.message);
@@ -42,7 +40,7 @@ const fetchResource = async (url, method = "get", data = null) => {
 };
 
 const manageDnsRecord = async (action = "add") => {
-  const url = `https://api.cloudflare.com/client/v4/zones/${config.cloudflareZoneId}/dns_records`;
+  const url = `https://api.cloudflare.com/client/v4/zones/${cloudflareZoneId}/dns_records`;
 
   const record = await fetchResource(`${url}?type=CNAME&name=${recordName}`);
 
@@ -74,7 +72,7 @@ const manageDnsRecord = async (action = "add") => {
 };
 
 const manageCustomDomain = async (action = "add") => {
-  const url = `https://api.cloudflare.com/client/v4/accounts/${config.cloudflareAccountId}/pages/projects/${config.projectName}/domains`;
+  const url = `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/pages/projects/${projectName}/domains`;
   const currentDomains = await fetchResource(url);
 
   if (
@@ -99,6 +97,7 @@ const manageCustomDomain = async (action = "add") => {
 
 const run = async () => {
   const action = process.env.GITHUB_ACTION === "closed" ? "remove" : "add";
+
   await manageDnsRecord(action);
   await manageCustomDomain(action);
 };
