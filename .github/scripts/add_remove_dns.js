@@ -3,8 +3,12 @@ const axios = require("axios");
 // Set your environment variables or pass them as arguments
 const cloudflareZoneId = process.env.CLOUDFLARE_ZONE_ID;
 const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN;
+const cloudflareAccountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const prNumber = process.env.GITHUB_PR_NUMBER;
 const branchName = process.env.BRANCH_NAME;
+
+// Custom const
+const projectName = "multi-domain-app"; // cloudflare pages => project name
 
 // Normalize branch name
 const normalizedBranchName = branchName
@@ -21,6 +25,29 @@ const headers = {
   "Content-Type": "application/json",
 };
 console.log("headers", headers);
+
+async function addCustomDomain() {
+  const url = `https://api.cloudflare.com/client/v4/accounts/${cloudflareAccountId}/pages/projects/${projectName}/domains`;
+
+  try {
+    const response = await axios.post(
+      url,
+      { hostname: recordName },
+      {
+        headers,
+      }
+    );
+
+    // Log the response from Cloudflare
+    console.log("Success:", response.data);
+  } catch (error) {
+    // Handle errors here
+    console.error(
+      "Error adding domain:",
+      error.response ? error.response.data : error.message
+    );
+  }
+}
 
 // Function to update DNS record
 async function updateDnsRecord() {
@@ -44,6 +71,8 @@ async function updateDnsRecord() {
     const response = await axios.post(url, body, { headers });
 
     console.log(response?.data); // Log the response from the Cloudflare API
+
+    await addCustomDomain();
   } catch (error) {
     console.log("error", JSON.stringify(error));
   }
@@ -54,8 +83,8 @@ async function removeDnsRecord() {
   console.log(`Removing DNS record for ${recordName}`);
 
   // Fetch DNS record ID
-  const getUrl = `https://api.cloudflare.com/client/v4/zones/${cloudflareZoneId}/dns_records?name=${recordName}`;
-  const getResponse = await axios.get(getUrl, { headers });
+  const url = `https://api.cloudflare.com/client/v4/zones/${cloudflareZoneId}/dns_records?name=${recordName}`;
+  const getResponse = await axios.get(url, { headers });
 
   const recordId = getResponse.data.result[0]?.id;
 

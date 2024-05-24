@@ -27,5 +27,5 @@ jobs:
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           GITHUB_PR_NUMBER: ${{ github.event.number }}
           BRANCH_NAME: ${{ github.head_ref }}
-          #CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node .github/scripts/add_remove_dns.js
