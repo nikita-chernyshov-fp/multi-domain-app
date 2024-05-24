@@ -6,9 +6,8 @@ export const appTwoConfig = {
   routes: [
     { path: "/", component: HomePageTwo, exact: true },
     { path: "/about", component: AboutPageTwo, exact: true },
-    { path: "/about2", component: AboutPageTwo, exact: true },
   ],
   wrapper: ({ children }) => (
-    <div style={{ border: "4px solid red" }}>{children}</div>
+    <div style={{ border: "2px solid red" }}>{children}</div>
   ),
 };
