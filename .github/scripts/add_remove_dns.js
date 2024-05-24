@@ -32,7 +32,7 @@ async function addCustomDomain() {
   try {
     const response = await axios.post(
       url,
-      { hostname: recordName },
+      { name: recordName },
       {
         headers,
       }
