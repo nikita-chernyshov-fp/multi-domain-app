@@ -22,12 +22,14 @@ jobs:
       - name: Install Axios
         run: npm install axios
 
-      - name: Update DNS Record
+      - name: Add / Update / Delete DNS Record
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-          GITHUB_PR_NUMBER: ${{ github.event.number }}
           BRANCH_NAME: ${{ github.head_ref }}
-        run: node .github/scripts/dns.js
+          DOMAIN: ${{ secrets.DOMAIN }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+          GITHUB_ACTION: ${{ github.event.action }}
+        run: node .github/scripts/dns2.js
