@@ -143,15 +143,19 @@ async function removeDnsRecord() {
   }
 }
 
-try {
-  if (process.argv[2] === "remove") {
-    await removeDnsRecord();
-    await removeCustomDomain();
-  } else {
-    await updateDnsRecord();
-    await addCustomDomain();
+const run = async () => {
+  try {
+    if (process.argv[2] === "remove") {
+      await removeDnsRecord();
+      await removeCustomDomain();
+    } else {
+      await updateDnsRecord();
+      await addCustomDomain();
+    }
+  } catch (error) {
+    console.error("Unhandled error:", error);
+    process.exit(1);
   }
-} catch (error) {
-  console.error("Unhandled error:", error);
-  process.exit(1);
-}
+};
+
+run();
