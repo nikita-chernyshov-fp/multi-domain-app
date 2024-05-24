@@ -11,3 +11,4 @@ export const appOneConfig = {
     <div style={{ border: "4px solid blue" }}>{children}</div>
   ),
 };
+
