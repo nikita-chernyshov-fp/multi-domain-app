@@ -130,7 +130,6 @@ async function removeDnsRecord() {
       const deleteUrl = `https://api.cloudflare.com/client/v4/zones/${cloudflareZoneId}/dns_records/${recordId}`;
       const deleteResponse = await axios.delete(deleteUrl, { headers });
       console.log("DNS record removed successfully:", deleteResponse.data);
-      await removeCustomDomain();
     } else {
       console.log("No DNS record found to delete.");
       process.exit(1);
@@ -146,9 +145,11 @@ async function removeDnsRecord() {
 
 try {
   if (process.argv[2] === "remove") {
-    removeDnsRecord();
+    await removeDnsRecord();
+    await removeCustomDomain();
   } else {
-    updateDnsRecord();
+    await updateDnsRecord();
+    await addCustomDomain();
   }
 } catch (error) {
   console.error("Unhandled error:", error);
