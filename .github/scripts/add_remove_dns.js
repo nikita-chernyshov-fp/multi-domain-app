@@ -8,7 +8,7 @@ const prNumber = process.env.GITHUB_PR_NUMBER;
 const branchName = process.env.BRANCH_NAME;
 
 // Custom const
-const projectName = "multi-domain-app"; // cloudflare pages => project name
+const projectName = "multi-domain-app"; // ? github secret ? cloudflare pages => project name
 
 // Normalize branch name
 const normalizedBranchName = branchName
@@ -46,6 +46,8 @@ async function addCustomDomain() {
       "Error adding domain:",
       error.response ? error.response.data : error.message
     );
+
+    process.exit(1);
   }
 }
 
@@ -75,6 +77,7 @@ async function updateDnsRecord() {
     await addCustomDomain();
   } catch (error) {
     console.log("error", JSON.stringify(error));
+    process.exit(1);
   }
 }
 
@@ -98,6 +101,7 @@ async function removeDnsRecord() {
     console.log(deleteResponse?.data);
   } else {
     console.log("No DNS record found to delete.");
+    process.exit(1);
   }
 }
 
@@ -110,4 +114,5 @@ try {
   }
 } catch (error) {
   console.log("error", error);
+  process.exit(1);
 }
