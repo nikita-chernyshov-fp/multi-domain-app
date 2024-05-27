@@ -96,7 +96,7 @@ const manageCustomDomain = async (action = "add") => {
 };
 
 const run = async () => {
-  const action = "add"; // process.env.MESSAGE === "add" ? "add" : "remove";
+  const action = "remove"; // process.env.MESSAGE === "add" ? "add" : "remove";
 
   console.log("action: ", action);
 
