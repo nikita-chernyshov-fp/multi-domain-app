@@ -1,0 +1,19 @@
+name: Add commit
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+jobs:
+  add-domains:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add DNS Records and Custom Domains
+        run: node all.js
+        env:
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          MESSAGE: ${{ github.event.head_commit.message }}

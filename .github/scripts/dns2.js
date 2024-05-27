@@ -6,7 +6,6 @@ const cloudflareApiToken = process.env.CLOUDFLARE_API_TOKEN;
 const cloudflareAccountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const projectName = process.env.CLOUDFLARE_PROJECT_NAME;
 const prNumber = process.env.GITHUB_PR_NUMBER;
-const branchName = process.env.BRANCH_NAME;
 const domain = process.env.DOMAIN;
 const normalizedBranchName = process.env.BRANCH_NAME.replace(/\//g, "-")
   .replace(/_/g, "-")
@@ -97,7 +96,7 @@ const manageCustomDomain = async (action = "add") => {
 };
 
 const run = async () => {
-  const action = process.env.GITHUB_ACTION === "closed" ? "remove" : "add";
+  const action = process.env.GITHUB_ACTION === "merged" ? "remove" : "add";
 
   await manageDnsRecord(action);
   await manageCustomDomain(action);
