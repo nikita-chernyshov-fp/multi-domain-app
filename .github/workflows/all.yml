@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
+      - name: Install Axios
+        run: npm install axios
 
       - name: Add DNS Records and Custom Domains
         run: node .github/scripts/all.js
