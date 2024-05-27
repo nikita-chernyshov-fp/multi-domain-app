@@ -97,6 +97,9 @@ const manageCustomDomain = async (action = "add") => {
 
 const run = async () => {
   const action = process.env.MESSAGE === "add" ? "add" : "remove";
+  
+  console.log('action: ', action)
+  console.log('message: ' process.env.MESSAGE)
 
   await manageDnsRecord(action);
   await manageCustomDomain(action);
