@@ -1,0 +1,17 @@
+# name: Remove Domains on PR Close
+# on:
+#   pull_request:
+#     types: [closed]
+# jobs:
+#   remove-domains:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Remove DNS Records and Custom Domains
+#         run: node removeDomains.js
+#         env:
+#           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+#           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+#           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+#           CLOUDFLARE_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+#           DOMAIN: ${{ secrets.DOMAIN }}
+#           GITHUB_PR_NUMBER: ${{ github.event.number }}
