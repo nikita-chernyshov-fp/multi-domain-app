@@ -6,6 +6,15 @@ jobs:
   add-domains:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
       - name: Add DNS Records and Custom Domains
         run: node .github/scripts/all.js
         env:
