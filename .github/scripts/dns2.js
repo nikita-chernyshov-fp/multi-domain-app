@@ -96,7 +96,7 @@ const manageCustomDomain = async (action = "add") => {
 };
 
 const run = async () => {
-  const action = process.env.GITHUB_ACTION === "merged" ? "remove" : "add";
+  const action = process.env.MESSAGE === "add" ? "add" : "remove";
 
   await manageDnsRecord(action);
   await manageCustomDomain(action);
