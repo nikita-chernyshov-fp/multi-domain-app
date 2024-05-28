@@ -2,6 +2,9 @@ name: Remove
 on:
   pull_request:
     types: [closed]
+    branches:
+      - "!master" # excludes master
+      # - "feature/**" # triggerd on particular branch
 jobs:
   add-domains:
     runs-on: ubuntu-latest

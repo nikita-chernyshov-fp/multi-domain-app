@@ -2,6 +2,9 @@ name: Add
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - "!master" # excludes master
+      # - "feature/**" # triggerd on particular branch
 jobs:
   add-domains:
     runs-on: ubuntu-latest
